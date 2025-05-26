@@ -15,6 +15,7 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  styled,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -23,6 +24,8 @@ import {
   People as PeopleIcon,
   Assignment as AssignmentIcon,
   Analytics as AnalyticsIcon,
+  ExitToApp as ExitToAppIcon,
+  Settings as SettingsIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 240;
@@ -31,12 +34,24 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+  justifyContent: 'center',
+  backgroundColor: theme.palette.background.paper,
+}));
+
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-  { text: 'Job Postings', icon: <WorkIcon />, path: '/jobs' },
-  { text: 'Candidates', icon: <PeopleIcon />, path: '/candidates' },
-  { text: 'Applications', icon: <AssignmentIcon />, path: '/applications' },
-  { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
+  { text: 'Jobs', icon: <WorkIcon />, path: '/jobs' },
+  { text: 'Talents', icon: <PeopleIcon />, path: '/candidates' },
+];
+
+const bottomMenuItems = [
+  { text: 'Log Out', icon: <ExitToAppIcon />, path: '/logout' },
+  { text: 'Manage Profile', icon: <SettingsIcon />, path: '/profile' },
 ];
 
 export default function Layout({ children }: LayoutProps) {
@@ -51,12 +66,21 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   const drawer = (
-    <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          Talent Acquisition
+    <Box sx={{ backgroundColor: theme.palette.background.paper, height: '100%' }}>
+      <DrawerHeader>
+        <Box
+          sx={{
+            width: 40,
+            height: 40,
+            backgroundColor: theme.palette.primary.light,
+            borderRadius: '8px',
+            mr: 1,
+          }}
+        />
+        <Typography variant="h6" noWrap>
+          SOME NAME
         </Typography>
-      </Toolbar>
+      </DrawerHeader>
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
@@ -68,14 +92,34 @@ export default function Layout({ children }: LayoutProps) {
                   setMobileOpen(false);
                 }
               }}
+              sx={{ color: theme.palette.text.primary }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon sx={{ color: theme.palette.text.primary }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-    </div>
+      <Box sx={{ flexGrow: 1 }} />
+      <List>
+        {bottomMenuItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                navigate(item.path);
+                if (isMobile) {
+                  setMobileOpen(false);
+                }
+              }}
+              sx={{ color: theme.palette.text.primary }}
+            >
+              <ListItemIcon sx={{ color: theme.palette.text.primary }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 
   return (
@@ -86,6 +130,8 @@ export default function Layout({ children }: LayoutProps) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor: theme.palette.background.default,
+          color: theme.palette.text.primary,
         }}
       >
         <Toolbar>
@@ -112,12 +158,13 @@ export default function Layout({ children }: LayoutProps) {
           open={isMobile ? mobileOpen : true}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              backgroundColor: theme.palette.background.paper,
             },
           }}
         >
@@ -131,6 +178,8 @@ export default function Layout({ children }: LayoutProps) {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           mt: '64px',
+          backgroundColor: theme.palette.background.default,
+          minHeight: 'calc(100vh - 64px)',
         }}
       >
         {children}

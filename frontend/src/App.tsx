@@ -12,14 +12,18 @@ import Analytics from './pages/Analytics';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
+      main: '#40468E',
+      light: '#AFB9DD',
+      dark: '#2D336B',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#FFF2F2',
+      paper: '#D7DCEB',
     },
+    text: {
+      primary: '#170F38',
+      secondary: '#251B51',
+    }
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
